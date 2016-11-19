@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
