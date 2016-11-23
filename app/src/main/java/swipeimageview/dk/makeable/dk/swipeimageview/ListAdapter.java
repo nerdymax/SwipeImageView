@@ -5,19 +5,22 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by simonchristensen on 18/11/2016.
  */
 
-public class ListAdapter extends BaseSwipeAdapter {
+public class ListAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<String> mImageViews;
@@ -43,26 +46,22 @@ public class ListAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public int getSwipeLayoutResourceId(int position) {
-        return R.id.swipe_layout;
-    }
+    public View getView(int i, View convertView, ViewGroup viewGroup) {
+        final ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
+            holder = new ViewHolder();
+            holder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
+            holder.textView = (TextView) convertView.findViewById(R.id.text_view);
+            holder.swipeView = convertView.findViewById(R.id.swipe_view);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-    @Override
-    public View generateView(int position, ViewGroup parent) {
-        return LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
-    }
-
-    @Override
-    public void fillValues(int position, View convertView) {
-
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.image_view);
-        imageView.setBackgroundColor(Color.rgb(position * 100 % 256, 255, 255));
-
-        TextView textView = (TextView) convertView.findViewById(R.id.text_view);
-        textView.setText(String.format("This is the content at Position %d.", position));
-
-        View swipeView = convertView.findViewById(R.id.swipe_view);
-        swipeView.setBackgroundColor(Color.rgb(position * 100 % 256, 0, 0));
+        holder.imageView.setBackgroundColor(Color.rgb(i * 100, 100, 100));
+        holder.textView.setText(String.format(Locale.US, "Text at Position %d", i));
+        holder.swipeView.setBackgroundColor(Color.rgb(i * 100, 0, 100));
 
         // Set up swipe layout & event listener
         SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(R.id.swipe_layout);
@@ -98,5 +97,13 @@ public class ListAdapter extends BaseSwipeAdapter {
                 //when user's hand released.
             }
         });
+
+        return convertView;
+    }
+
+    private static class ViewHolder{
+        private ImageView imageView;
+        private TextView textView;
+        private View swipeView;
     }
 }
