@@ -8,9 +8,11 @@ import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ListView mListView;
+    private StickyListHeadersListView mListView;
     private ListAdapter mListAdapter;
     private ArrayList<String> mArrayList;
 
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mListView = (ListView) findViewById(R.id.listview);
+        mListView = (StickyListHeadersListView) findViewById(R.id.listview);
         generatePictures();
     }
 

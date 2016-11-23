@@ -11,13 +11,17 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 /**
  * Created by simonchristensen on 18/11/2016.
  */
 
-public class ListAdapter extends BaseSwipeAdapter {
+public class ListAdapter extends BaseSwipeAdapter implements StickyListHeadersAdapter {
 
     private Context mContext;
     private ArrayList<String> mImageViews;
@@ -49,7 +53,7 @@ public class ListAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        return LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
+        return LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
     }
 
     @Override
@@ -98,5 +102,37 @@ public class ListAdapter extends BaseSwipeAdapter {
                 //when user's hand released.
             }
         });
+    }
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder holder;
+        if (convertView == null) {
+            holder = new HeaderViewHolder();
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.section_header, parent, false);
+            holder.headerText = (TextView) convertView.findViewById(R.id.header_text);
+            convertView.setTag(holder);
+        } else {
+            holder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        if (position < 3)
+            holder.headerText.setText("First section");
+        else
+            holder.headerText.setText("Second section");
+
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        if (position < 3)
+            return 0;
+        else
+            return 3;
+    }
+
+    private class HeaderViewHolder {
+        TextView headerText;
     }
 }
