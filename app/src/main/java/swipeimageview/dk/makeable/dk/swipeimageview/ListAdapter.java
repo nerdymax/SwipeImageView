@@ -16,11 +16,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+
 /**
  * Created by simonchristensen on 18/11/2016.
  */
 
-public class ListAdapter extends BaseAdapter {
+public class ListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
     private Context mContext;
     private ArrayList<String> mImageViews;
@@ -101,9 +103,42 @@ public class ListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private static class ViewHolder{
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder holder;
+        if (convertView == null) {
+            holder = new HeaderViewHolder();
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.section_header, parent, false);
+            holder.headerText = (TextView) convertView.findViewById(R.id.header_text);
+            convertView.setTag(holder);
+        } else {
+            holder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        if (position < 3) {
+            holder.headerText.setText("First header");
+        } else {
+            holder.headerText.setText("Second header");
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        if (position < 3)
+            return 0;
+        else
+            return 3;
+    }
+
+    private static class ViewHolder {
         private ImageView imageView;
         private TextView textView;
         private View swipeView;
+    }
+
+    private static class HeaderViewHolder {
+        private TextView headerText;
     }
 }
