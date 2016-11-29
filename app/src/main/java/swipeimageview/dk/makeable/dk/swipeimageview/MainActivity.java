@@ -2,9 +2,9 @@ package swipeimageview.dk.makeable.dk.swipeimageview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
-
-import com.daimajia.swipe.SwipeLayout;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.util.ArrayList;
 
@@ -37,5 +37,34 @@ public class MainActivity extends AppCompatActivity {
         mListAdapter = new ListAdapter(this, mArrayList);
 
         mListView.setAdapter(mListAdapter);
+
+        mListView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int totalHeight = getTotalHeightOfListView(mListView);
+            }
+        });
+    }
+
+    private static int getTotalHeightOfListView(StickyListHeadersListView listView) {
+
+        ListAdapter mAdapter = (ListAdapter) listView.getAdapter();
+
+        int totalHeight = 0;
+
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            View mView = mAdapter.getView(i, null, listView);
+
+            mView.measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            totalHeight += mView.getMeasuredHeight();
+        }
+
+        Log.w("HEIGHT", String.valueOf(totalHeight));
+
+        return totalHeight;
+
     }
 }
