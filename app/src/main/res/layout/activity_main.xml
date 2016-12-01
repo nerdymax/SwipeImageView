@@ -14,4 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/indicator_view"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="@android:color/holo_blue_bright"
+        android:gravity="center" />
+
 </RelativeLayout>
